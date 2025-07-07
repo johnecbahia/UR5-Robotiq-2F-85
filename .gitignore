@@ -1,2 +1,10 @@
 catkin_ws/src/robotiq_gripper/
 catkin_ws/src/universal_robot/
+catkin_ws/src/Universal_Robots_Client_Library/
+catkin_ws/src/Universal_Robots_ROS_Driver/
+catkin_ws/src/Universal_Robots_ROS_cartesian_control_msgs/
+catkin_ws/src/Universal_Robots_ROS_controllers_cartesian/
+catkin_ws/src/Universal_Robots_ROS_passthrough_controllers/
+catkin_ws/src/Universal_Robots_ROS_scaled_controllers/
+catkin_ws/src/industrial_robot_status_controller/
+catkin_ws/src/ur_msgs/
