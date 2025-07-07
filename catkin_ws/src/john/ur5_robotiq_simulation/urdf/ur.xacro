@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg robot_model)_robot">
+
+  <link name="world"/>
+  <!-- Mesa -->
+  <link name="table_link">
+    <visual>
+      <origin xyz="0 0 0.375" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="1.0" length="0.75"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.6 0.6 0.6 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.375" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="1.0" length="0.75"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="5.0"/>
+      <origin xyz="0 0 0.375"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+
+
+
+  <xacro:include filename="$(find ur_gazebo)/urdf/ur_macro.xacro"/>
+
+  <!--Declare arguments -->
+  <xacro:arg name="joint_limit_params" default=""/>
+  <xacro:arg name="physical_params" default=""/>
+  <xacro:arg name="kinematics_params" default=""/>
+  <xacro:arg name="visual_params" default=""/>
+  <!--
+    legal values:
+      - hardware_interface/PositionJointInterface
+      - hardware_interface/VelocityJointInterface
+      - hardware_interface/EffortJointInterface
+
+    NOTE: this value must correspond to the controller configured in the
+          controller .yaml files in the 'config' directory.
+  -->
+  <xacro:arg name="transmission_hw_interface" default="hardware_interface/EffortJointInterface"/>
+  <xacro:arg name="safety_limits" default="false"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+
+  <!-- Instantiate the Gazebo robot and pass it all the required arguments. -->
+  <xacro:ur_robot_gazebo
+    prefix=""
+    joint_limits_parameters_file="$(arg joint_limit_params)"
+    kinematics_parameters_file="$(arg kinematics_params)"
+    physical_parameters_file="$(arg physical_params)"
+    visual_parameters_file="$(arg visual_params)"
+    transmission_hw_interface="$(arg transmission_hw_interface)"
+    safety_limits="$(arg safety_limits)"
+    safety_pos_margin="$(arg safety_pos_margin)"
+    safety_k_position="$(arg safety_k_position)"
+  />
+
+  <!--
+    Attach the Gazebo model to Gazebo's world frame.
+
+    Note: if you're looking to integrate a UR into a larger scene and need
+    to add EEFs or other parts, DO NOT change this file or the 'world' link
+    here. Create a NEW xacro instead and decide whether you need to add
+    a 'world' link there.
+  -->
+
+   <!--
+  <link name="world"/>
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  -->
+
+  
+
+
+  <link name="tool0_controller"/>
+  <joint name="tool_controller_fake_joint" type="fixed">
+    <parent link="tool0"/>
+    <child link="tool0_controller"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+
+  <joint name="world_to_table" type="fixed">
+    <parent link="world"/>
+    <child link="table_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="table_to_base" type="fixed">
+    <parent link="table_link"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.75" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- Inclui o modelo do gripper -->
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro" />
+  <xacro:robotiq_85_gripper prefix="" parent="wrist_3_link" >
+    <origin xyz="0 0 0" rpy="0 -1.5708 3.14159"/>
+  </xacro:robotiq_85_gripper>
+  
+
+  <xacro:include filename="$(find ur5_robotiq_simulation)/urdf/d435.urdf.xacro"/>
+  <joint name="d435_mount_joint" type="fixed">
+    <!-- tool0 é a flange padrão do UR5 -->
+    <parent link="tool0"/>
+    <child  link="d435_link"/>
+    <!-- Ajuste a posição/orientação conforme necessário:
+         10 cm à frente da flange e câmera “olhando” para o -Z do braço -->
+    <origin xyz="-0.05 0 0" rpy="0 0 1.5708"/>
+  </joint>
+
+
+  
+
+
+
+  <!-- Ajustes de atrito para o Robotiq -->
+  <gazebo reference="robotiq_85_left_finger_tip_link">
+    <surface>
+      <friction>
+        <ode>
+          <mu>10.0</mu>
+          <mu2>10.0</mu2>
+          <pyramid_model>true</pyramid_model>
+          <slip1>0.0</slip1>
+          <slip2>0.0</slip2>
+        </ode>
+      </friction>
+    </surface>
+  </gazebo>
+
+  <gazebo reference="robotiq_85_right_finger_tip_link">
+    <surface>
+      <friction>
+        <ode>
+          <mu>10.0</mu>
+          <mu2>10.0</mu2>
+          <pyramid_model>true</pyramid_model>
+          <slip1>0.0</slip1>
+          <slip2>0.0</slip2>
+        </ode>
+      </friction>
+    </surface>
+  </gazebo>
+
+
+   <!-- 
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+  </gazebo>
+  -->
+</robot>

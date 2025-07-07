@@ -1,0 +1,11 @@
+
+gripper_controller:
+  type: position_controllers/JointPositionController
+  joint: finger_joint
+  
+gazebo_ros_control:
+  pid_gains:
+    finger_joint:
+      p: 10   # Ganho proporcional (aumente para resposta mais rápida)
+      i: 0.1   # Ganho integral (baixo para evitar overshoot)
+      d: 0.1   # Ganho derivativo (amortece oscilações)

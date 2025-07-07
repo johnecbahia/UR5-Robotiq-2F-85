@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ur5_robotiq_simulation</name>
+  <version>1.0.0</version>
+  <description>
+    Simulação do UR5 com a garra Robotiq 2F-85 no Gazebo
+  </description>
+
+  <author>Jonatas Araujo Silva</author>
+  <maintainer email="jonatas.silva@ufba.br">A. S. Jonatas</maintainer>
+
+  <license>BSD</license>
+  <url type="website">http://jonatas.com.br</url>
+
+  <!-- Ferramenta de compilação -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Dependências necessárias para build e execução -->
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>xacro</build_depend>
+  <build_depend>urdf</build_depend>
+  <build_depend>controller_manager</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>gazebo_ros_control</build_depend>
+  <build_depend>joint_state_controller</build_depend>
+  <build_depend>joint_trajectory_controller</build_depend>
+  <build_depend>position_controllers</build_depend>
+  <build_depend>robot_state_publisher</build_depend>
+  <build_depend>ur_description</build_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>urdf</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo_ros_control</exec_depend>
+  <exec_depend>joint_state_controller</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
+  <exec_depend>position_controllers</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>ur_description</exec_depend>
+
+  <export>
+  </export>
+</package>
